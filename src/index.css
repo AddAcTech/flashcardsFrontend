@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #e3abff;
+}
+
+.input {
+  @apply mt-2 rounded-md p-1 bg-textbg  border-primary border-solid border-2 font-bold shadow-[3px_3px_0_0_#a936e2];
+}
+
+.inputButton {
+  @apply mt-2 rounded-md p-1 bg-secondary text-[#443840] border-primary border-solid border-2 shadow-[3px_3px_0_0_#a936e2] hover:scale-110 transition-all ease-in-out;
+}
