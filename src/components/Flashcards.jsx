@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { LuRotate3D } from "react-icons/lu";
+import API from "../constants.js";
 
 function Flashcards() {
   const [flashcards, setFlashcards] = useState([]);
@@ -9,7 +11,7 @@ function Flashcards() {
   useEffect(() => {
     try {
       const getFlashcards = async () => {
-        const response = await fetch("http://localhost:3000/flashcards");
+        const response = await fetch(API);
         const data = await response.json();
         setFlashcards(data[0]);
         // Inicializa el estado para cada tarjeta
@@ -36,7 +38,7 @@ function Flashcards() {
   const handleDelete = async (flashcardToDelete) => {
     try {
       console.log(flashcardToDelete);
-      await fetch(`http://localhost:3000/flashcards/${flashcardToDelete}`, {
+      await fetch(`${API}${flashcardToDelete}`, {
         method: "DELETE",
       });
       setFlashcards(
@@ -60,8 +62,9 @@ function Flashcards() {
             onClick={() => handleCardClick(flashcard.id)}
           >
             {showFrontMap[flashcard.id] ? (
-              <div className="w-32 flex items-center justify-center text-center font-bold text-[#64748b]">
+              <div className="w-32 flex flex-col items-center justify-center text-center gap-3 font-bold text-[#64748b]">
                 <p className="mx-auto">{flashcard.back}</p>
+                <LuRotate3D className="text-3xl" />
               </div>
             ) : (
               <div>

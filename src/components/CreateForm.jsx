@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import API from "../constants.js";
 function CreateForm() {
   const [flashcard, setFlashcard] = useState({
     title: "Placeholder title",
@@ -22,7 +22,7 @@ function CreateForm() {
     e.preventDefault();
     try {
       const fetchPost = async () => {
-        const response = await fetch("http://localhost:3000/flashcards", {
+        const response = await fetch(API, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
