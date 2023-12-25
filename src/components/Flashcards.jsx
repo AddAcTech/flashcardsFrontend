@@ -38,7 +38,7 @@ function Flashcards() {
   const handleDelete = async (flashcardToDelete) => {
     try {
       console.log(flashcardToDelete);
-      await fetch(`${API}${flashcardToDelete}`, {
+      await fetch(API + "/" + flashcardToDelete, {
         method: "DELETE",
       });
       setFlashcards(
