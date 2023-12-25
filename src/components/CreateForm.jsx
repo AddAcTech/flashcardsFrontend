@@ -1,79 +1,80 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Main() {
-  const [flashcards, setFlashcards] = useState([]);
-  const [showFrontMap, setShowFrontMap] = useState({});
+function CreateForm() {
+  const [flashcard, setFlashcard] = useState({
+    title: "Placeholder title",
+    back: "Placeholder back",
+    subject: "Placeholder subject",
+    info: "Placeholder info",
+  });
 
-  useEffect(() => {
+  const navigate = useNavigate();
+
+  function handleChange(e) {
+    setFlashcard({
+      ...flashcard,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
     try {
-      const getFlashcards = async () => {
-        const response = await fetch("http://localhost:3000/flashcards");
-        const data = await response.json();
-        setFlashcards(data[0]);
-        // Inicializa el estado para cada tarjeta
-        const initialShowFrontMap = {};
-        data[0].forEach((flashcard) => {
-          initialShowFrontMap[flashcard.id] = true;
+      const fetchPost = async () => {
+        const response = await fetch("http://localhost:3000/flashcards", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(flashcard),
         });
-        setShowFrontMap(initialShowFrontMap);
+        navigate("/");
       };
-      getFlashcards();
+      fetchPost();
     } catch (error) {
       console.log(error);
     }
-  }, []);
-
-  const handleCardClick = (flashcardId) => {
-    // Voltea el estado de la tarjeta específica al hacer clic
-    setShowFrontMap((prevShowFrontMap) => ({
-      ...prevShowFrontMap,
-      [flashcardId]: !prevShowFrontMap[flashcardId],
-    }));
-  };
+  }
 
   return (
-    <>
-      <h1 className="text-5xl font-bold my-4 text-primary">Flashcards</h1>
-      <div className="flex flex-col lg:grid lg:grid-cols-2 items-center">
-        {flashcards.map((flashcard) => (
-          <div
-            key={flashcard.id}
-            className="flex flex-col md:flex-row m-4 bg-textbg rounded-md p-3 max-w-2xl hover:border-primary hover:border-4 hover:border-solid transition-all ease-in-out"
-            onClick={() => handleCardClick(flashcard.id)}
-          >
-            {showFrontMap[flashcard.id] ? (
-              <div className="w-30 flex flex-col justify-center">
-                <p>{flashcard.back}</p>
-              </div>
-            ) : (
-              <div>
-                <div>
-                  <h1 className="text-3xl font-bold text-primary">
-                    {flashcard.title}
-                  </h1>
-                  <h2 className="text-[#64748b] font-bold">
-                    {flashcard.subject}
-                  </h2>
-                </div>
-                <div className="max-w-md p-2 text-[#7c6a76]">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Odit, dolores ea. Harum neque assumenda nesciunt! Magnam, sit
-                  perferendis. Dolorem totam nesciunt, iste non voluptates, quia
-                  libero tenetur explicabo ullam blanditiis sunt! Fugit
-                  accusantium nemo ea consectetur vero illum molestias, minima
-                  voluptatem tenetur blanditiis enim.
-                </div>
-                <div className="mx-auto flex justify-center gap-4 w-24">
-                  <button className="inputButton">Eliminar</button>
-                  <button className="inputButton">Actualizar</button>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </>
+    <form
+      action="card"
+      className="p-4 flex flex-col justify-center gap-3 w-4/5 md:w-2/6 text-[#0e0311] h-screen"
+    >
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        onChange={handleChange}
+        className="input"
+      />
+      <input
+        type="text"
+        name="back"
+        placeholder="Back"
+        onChange={handleChange}
+        className="input"
+      />
+      <input
+        type="text"
+        name="subject"
+        placeholder="Subject"
+        onChange={handleChange}
+        className="input"
+      />
+      <input
+        type="text"
+        name="info"
+        placeholder="Info"
+        onChange={handleChange}
+        className="input"
+      />
+      <button onClick={handleSubmit} className="input w-32">
+        Crear
+      </button>
+    </form>
   );
 }
 
-export default Main;
+export default CreateForm;

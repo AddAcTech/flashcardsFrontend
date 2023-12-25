@@ -6,6 +6,14 @@ body {
   background-color: #e3abff;
 }
 
+p {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+h1,
+h2 {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
 .input {
   @apply mt-2 rounded-md p-1 bg-textbg  border-primary border-solid border-2 font-bold shadow-[3px_3px_0_0_#a936e2];
 }

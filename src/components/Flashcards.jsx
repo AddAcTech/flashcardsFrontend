@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Main() {
+function Flashcards() {
   const [flashcards, setFlashcards] = useState([]);
   const [showFrontMap, setShowFrontMap] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     try {
@@ -31,9 +33,25 @@ function Main() {
     }));
   };
 
+  const handleDelete = async (flashcardToDelete) => {
+    try {
+      console.log(flashcardToDelete);
+      await fetch(`http://localhost:3000/flashcards/${flashcardToDelete}`, {
+        method: "DELETE",
+      });
+      setFlashcards(
+        flashcards.filter((flashcard) => flashcard.id !== flashcardToDelete)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <h1 className="text-5xl font-bold my-4 text-primary">Flashcards</h1>
+      <button className="input" onClick={() => navigate("/newCard")}>
+        Crear flashcard
+      </button>
       <div className="flex flex-col lg:grid lg:grid-cols-2 items-center">
         {flashcards.map((flashcard) => (
           <div
@@ -42,8 +60,8 @@ function Main() {
             onClick={() => handleCardClick(flashcard.id)}
           >
             {showFrontMap[flashcard.id] ? (
-              <div className="w-30 flex flex-col justify-center">
-                <p>{flashcard.back}</p>
+              <div className="w-32 flex items-center justify-center text-center font-bold text-[#64748b]">
+                <p className="mx-auto">{flashcard.back}</p>
               </div>
             ) : (
               <div>
@@ -56,16 +74,16 @@ function Main() {
                   </h2>
                 </div>
                 <div className="max-w-md p-2 text-[#7c6a76]">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Odit, dolores ea. Harum neque assumenda nesciunt! Magnam, sit
-                  perferendis. Dolorem totam nesciunt, iste non voluptates, quia
-                  libero tenetur explicabo ullam blanditiis sunt! Fugit
-                  accusantium nemo ea consectetur vero illum molestias, minima
-                  voluptatem tenetur blanditiis enim.
+                  <p>{flashcard.info}</p>
                 </div>
                 <div className="mx-auto flex justify-center gap-4 w-24">
-                  <button className="inputButton">Eliminar</button>
-                  <button className="inputButton">Actualizar</button>
+                  <button
+                    className="inputButton"
+                    onClick={() => handleDelete(flashcard.id)}
+                  >
+                    Eliminar
+                  </button>
+                  {/* <button className="inputButton">Actualizar</button> */}
                 </div>
               </div>
             )}
@@ -76,4 +94,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Flashcards;
