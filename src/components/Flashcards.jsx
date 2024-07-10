@@ -13,6 +13,7 @@ function Flashcards() {
       const getFlashcards = async () => {
         const response = await fetch(API);
         const data = await response.json();
+        console.log(data);
         setFlashcards(data[0]);
         // Inicializa el estado para cada tarjeta
         const initialShowFrontMap = {};

@@ -1,2 +1,2 @@
-const API = "https://flashcards-production-0038.up.railway.app/flashcards";
+const API = "http://localhost:3000/flashcards";
 export default API;
